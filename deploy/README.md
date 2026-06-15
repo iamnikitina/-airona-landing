@@ -25,11 +25,11 @@
 
 ```bash
 cd /Users/evgeniapudokhina/projects/airona-landing
-git remote add origin git@github.com:USERNAME/airona-landing.git
+git remote add origin git@github.com:iamnikitina/-airona-landing.git
 git push -u origin main
 ```
 
-Если GitHub попросит авторизацию — настройте SSH-ключ или используйте HTTPS-вариант `https://github.com/USERNAME/airona-landing.git` (тогда нужен personal access token при push).
+Если GitHub попросит авторизацию — настройте SSH-ключ или используйте HTTPS-вариант `https://github.com/iamnikitina/-airona-landing.git` (тогда нужен personal access token при push).
 
 ---
 
@@ -51,8 +51,9 @@ apt install -y nginx git certbot python3-certbot-nginx
 ```bash
 mkdir -p /var/www
 cd /var/www
-git clone https://github.com/USERNAME/airona-landing.git aironaai
-# Если репо приватный — нужен deploy key или PAT
+# Важно: репо начинается с дефиса, поэтому всегда пишем явно "./" перед целевой папкой
+git clone https://github.com/iamnikitina/-airona-landing.git ./aironaai
+# Если репо приватный — нужен deploy key или PAT (Personal Access Token)
 ```
 
 Положить nginx-конфиг (он лежит в репо `deploy/nginx-aironaai.conf`):
