@@ -1,0 +1,7 @@
+.DS_Store
+*.log
+node_modules/
+.env
+.env.*
+# локальный бэкап оригинала логотипа (8MB), не нужен в проде
+assets/airona-mark-source.png

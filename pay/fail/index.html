@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Оплата не прошла — АИРОНА</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0A1430; --bg-deep:#06112A; --bg-panel:#0B1E40;
+  --cyan:#22C7FF; --cyan-2:#00C6FF; --blue:#2E84E8;
+  --text:#F4F9FF; --text-dim:#9FBCDC; --muted:#6F8CB0;
+  --line:rgba(159,188,220,.16);
+  --warn:#FFB454;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--text);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;
+  background:
+    radial-gradient(1000px 600px at 50% 0%, rgba(255,180,84,.12), transparent 60%),
+    radial-gradient(800px 500px at 50% 100%, rgba(46,132,232,.12), transparent 55%),
+    linear-gradient(160deg, var(--bg-deep), var(--bg) 45%, var(--bg-panel) 120%);
+}
+.card{
+  max-width:480px;width:100%;text-align:center;padding:48px 36px;border-radius:24px;
+  background:linear-gradient(180deg,rgba(11,30,64,.85),rgba(6,17,42,.85));
+  border:1px solid rgba(255,180,84,.3);
+  box-shadow:0 40px 100px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,180,84,.06);
+}
+.warn-ic{
+  width:72px;height:72px;border-radius:50%;margin:0 auto 22px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#FFB454,#FF7A45);
+  box-shadow:0 10px 40px -8px rgba(255,180,84,.4);
+  animation:pop .5s cubic-bezier(.2,.7,.2,1);
+}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:none;opacity:1}}
+h1{font-family:'Sora',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.02em;line-height:1.15;margin-bottom:12px}
+.sub{color:var(--text-dim);font-size:16px;line-height:1.55;margin-bottom:28px}
+.btn{
+  font-family:'Sora';font-weight:600;font-size:16px;cursor:pointer;border:none;text-decoration:none;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  padding:17px 28px;border-radius:14px;color:#04101f;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-2) 55%, var(--blue));
+  box-shadow:0 10px 30px -10px rgba(34,199,255,.6), inset 0 1px 0 rgba(255,255,255,.4);
+  transition:transform .2s,box-shadow .2s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px -12px rgba(34,199,255,.75), inset 0 1px 0 rgba(255,255,255,.5)}
+.btn-ghost{
+  margin-top:12px;color:var(--text);background:rgba(255,255,255,.04);
+  border:1px solid var(--line);box-shadow:none;
+}
+.btn-ghost:hover{border-color:rgba(34,199,255,.5);background:rgba(255,255,255,.06)}
+.micro{margin-top:22px;font-size:13.5px;color:var(--muted);line-height:1.5}
+.micro a{color:var(--cyan);text-decoration:underline;text-underline-offset:2px}
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="warn-ic">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#04101f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+    </div>
+    <h1>Оплата не прошла</h1>
+    <p class="sub">Списание не произошло. Попробуй ещё раз — обычно помогает другой способ оплаты или другая карта.</p>
+    <a class="btn" href="/#plans">Попробовать снова</a>
+    <a class="btn btn-ghost" href="https://t.me/Goldovskii_Kirill" target="_blank" rel="noopener">Написать в поддержку</a>
+    <p class="micro">Если деньги списались, но статус «не прошла» — напиши нам, разберёмся за минуту: <a href="https://t.me/Goldovskii_Kirill" target="_blank" rel="noopener">@Goldovskii_Kirill</a></p>
+  </main>
+</body>
+</html>
