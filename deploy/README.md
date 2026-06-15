@@ -1,147 +1,81 @@
-# Деплой airona-landing на droplet 209.38.247.138
+# Деплой airona-landing (`aironaai.ru`) на droplet 209.38.247.138
 
-## Что у нас
+## Контекст
 
-- Droplet с уже работающим `bot.aironaai.ru` (FastAPI/uvicorn)
-- Хотим рядом поднять статичный `aironaai.ru` через nginx
-- DNS переезжает с nic.ru на Cloudflare
+На сервере уже работает:
+- **Traefik** (контейнер `n8n-compose-traefik-1`) на портах 80/443 — рулит routing'ом и автоматически выдаёт SSL через Let's Encrypt
+- **`airona-landing-web-1`** — старый вебинарный лендинг на домене `airona-ai.ru` (с дефисом). Не трогаем
+- **`aiironbot-bot`** — backend API на `bot.aironaai.ru`
 
-## План
+Мы поднимем **новый отдельный контейнер** для домена `aironaai.ru` (без дефиса), который вписывается в существующий Traefik через labels.
 
-```
-┌─────────────┐        ┌──────────────┐        ┌─────────────────┐
-│   GitHub    │  push  │   Droplet    │  serve │  aironaai.ru    │
-│  ваш репо   │ ─────► │  /var/www    │ ─────► │   (через CF)    │
-└─────────────┘        └──────────────┘        └─────────────────┘
-```
+## Шаг 1. Настроить DNS, чтобы aironaai.ru указывал на сервер
 
----
+Чтобы Traefik смог получить Let's Encrypt сертификат, домен должен резолвиться в `209.38.247.138`.
 
-## Шаг 1. Залить код на GitHub
+**Вариант A — быстрый (без Cloudflare):**
+В панели nic.ru добавить A-записи:
+- `aironaai.ru` → `209.38.247.138`
+- `www.aironaai.ru` → `209.38.247.138`
 
-В этой папке (на вашем Маке) git репо уже инициализирован, первый коммит сделан. Создайте на github.com новый репозиторий (можно приватный) — назовите `airona-landing` — и не инициализируйте его README/gitignore.
+Через 5–30 минут пропагация пройдёт.
 
-Затем выполните в терминале (замените `USERNAME` на ваш логин GitHub):
+**Вариант B — с Cloudflare (как изначально хотели):**
+1. Cloudflare → Add site → `aironaai.ru` → Free
+2. Добавить A-записи в Cloudflare:
+   | Type | Name | IPv4 | Proxy |
+   |---|---|---|---|
+   | A | `@` | `209.38.247.138` | ⚪ DNS only |
+   | A | `www` | `209.38.247.138` | ⚪ DNS only |
+3. На nic.ru заменить NS-сервера на 2 от Cloudflare
+4. **Важно:** оставить proxy ВЫКЛЮЧЕННЫМ (DNS only) до первого выпуска SSL — иначе Let's Encrypt не пройдёт challenge. Потом можно включить.
 
+Проверить пропагацию:
 ```bash
-cd /Users/evgeniapudokhina/projects/airona-landing
-git remote add origin git@github.com:iamnikitina/-airona-landing.git
-git push -u origin main
+dig aironaai.ru +short    # должен показать 209.38.247.138
 ```
 
-Если GitHub попросит авторизацию — настройте SSH-ключ или используйте HTTPS-вариант `https://github.com/iamnikitina/-airona-landing.git` (тогда нужен personal access token при push).
+## Шаг 2. Клонировать репо на сервер
 
----
-
-## Шаг 2. Настроить nginx на droplet
-
-SSH на сервер:
 ```bash
 ssh root@209.38.247.138
-# или с вашим пользователем: ssh user@209.38.247.138
+cd /opt
+git clone https://github.com/iamnikitina/-airona-landing.git ./aironaai-landing
+cd /opt/aironaai-landing
 ```
 
-Установить (если ещё нет) git и certbot:
+Обратите внимание: репо называется `-airona-landing` (с дефисом в начале — артефакт GitHub). Целевую папку называем `aironaai-landing` (без дефиса), чтобы не путать с существующей `/opt/airona-landing`.
+
+## Шаг 3. Запустить контейнер
+
 ```bash
-apt update
-apt install -y nginx git certbot python3-certbot-nginx
+cd /opt/aironaai-landing
+docker compose -f deploy/docker-compose.yml up -d
 ```
 
-Создать папку для сайта и клонировать репо:
+Traefik автоматически:
+- увидит новый контейнер с labels
+- запросит SSL у Let's Encrypt для `aironaai.ru` и `www.aironaai.ru`
+- начнёт принимать трафик
+
+Прогресс выпуска SSL:
 ```bash
-mkdir -p /var/www
-cd /var/www
-# Важно: репо начинается с дефиса, поэтому всегда пишем явно "./" перед целевой папкой
-git clone https://github.com/iamnikitina/-airona-landing.git ./aironaai
-# Если репо приватный — нужен deploy key или PAT (Personal Access Token)
+docker logs n8n-compose-traefik-1 2>&1 | grep -i aironaai | tail -20
 ```
 
-Положить nginx-конфиг (он лежит в репо `deploy/nginx-aironaai.conf`):
+Сертификат выпускается за 30–60 секунд после первого запроса к домену.
+
+## Шаг 4. Проверка
+
+С локального Мака:
 ```bash
-cp /var/www/aironaai/deploy/nginx-aironaai.conf /etc/nginx/sites-available/aironaai.ru
-ln -s /etc/nginx/sites-available/aironaai.ru /etc/nginx/sites-enabled/
-nginx -t          # проверяем что синтаксис ok
-systemctl reload nginx
-```
-
-**Важно:** конфиг сразу слушает 443 (HTTPS) — но сертификата ещё нет. После шага 4 certbot допишет SSL-блоки.
-
----
-
-## Шаг 3. Перевести DNS на Cloudflare
-
-1. Зайти на cloudflare.com → Sign Up → подтвердить email
-2. Add a site → ввести `aironaai.ru`
-3. Выбрать **Free plan**
-4. Cloudflare сканирует существующие DNS-записи. Должен подхватить `bot.aironaai.ru` → 209.38.247.138 (если нет — добавим вручную)
-5. **Добавить две A-записи** в Cloudflare DNS:
-
-   | Type | Name | IPv4 | Proxy |
-   |------|------|------|-------|
-   | A | `@` (aironaai.ru) | `209.38.247.138` | ✅ Proxied |
-   | A | `www` | `209.38.247.138` | ✅ Proxied |
-   | A | `bot` | `209.38.247.138` | ❌ DNS only |
-
-   `bot` оставляем без Cloudflare-прокси, чтобы API работал без сюрпризов (CORS, кеширование).
-
-6. Cloudflare покажет 2 nameserver'а (типа `liz.ns.cloudflare.com` и `ivan.ns.cloudflare.com`)
-7. Зайти на nic.ru → панель домена `aironaai.ru` → DNS-серверы → **заменить** на 2 от Cloudflare
-8. Подождать 5 мин – 24 ч (часто пропагация за 30 мин). Cloudflare пришлёт email когда увидит обновление NS
-
-После активации:
-- Cloudflare SSL/TLS → Overview → **Full** (НЕ "Flexible"!)
-- Cloudflare SSL/TLS → Edge Certificates → **Always Use HTTPS: On**
-
----
-
-## Шаг 4. Выпустить SSL на droplet (Let's Encrypt)
-
-После того как Cloudflare активен и DNS отвечает (проверка: `dig aironaai.ru` должен показывать IP Cloudflare), запустить certbot **с режимом `--cert-only`** (потому что трафик идёт через Cloudflare proxy):
-
-Вариант A — через webroot (если Cloudflare proxy на 80 порт пропускает ACME):
-```bash
-# Создать папку для challenge
-mkdir -p /var/www/certbot
-
-# Временно отключить Cloudflare proxy для @ и www (поставить серое облачко в Cloudflare DNS)
-# Затем:
-certbot --nginx -d aironaai.ru -d www.aironaai.ru \
-  --non-interactive --agree-tos -m ВАШ@EMAIL.RU
-
-# После выпуска сертификата вернуть Cloudflare proxy (оранжевое облачко)
-```
-
-Вариант B — Cloudflare Origin Certificate (проще):
-1. Cloudflare → SSL/TLS → Origin Server → Create Certificate
-2. Скачать private key + certificate
-3. Положить на сервер в `/etc/ssl/cloudflare/aironaai.{crt,key}`
-4. В nginx-конфиге:
-   ```nginx
-   ssl_certificate     /etc/ssl/cloudflare/aironaai.crt;
-   ssl_certificate_key /etc/ssl/cloudflare/aironaai.key;
-   ```
-5. `systemctl reload nginx`
-
-Cloudflare Origin certs живут 15 лет — никаких renewals.
-
----
-
-## Шаг 5. Проверка
-
-```bash
-# С локального Мака после пропагации DNS:
 curl -I https://aironaai.ru/
-curl -I https://www.aironaai.ru/
-curl -s https://aironaai.ru/ | head -3   # должен быть наш DOCTYPE
+curl -I https://www.aironaai.ru/    # должен редиректить на https://aironaai.ru/
 ```
 
-В браузере: открыть `https://aironaai.ru/` → должен открыться лендинг.
+В браузере: открыть `https://aironaai.ru/` — должен открыться лендинг.
 
----
-
-## Шаг 6. Обновление сайта потом
-
-Когда нужно что-то поменять:
+## Обновление сайта потом
 
 На локалке:
 ```bash
@@ -155,19 +89,38 @@ git push
 На сервере:
 ```bash
 ssh root@209.38.247.138
-cd /var/www/aironaai
+cd /opt/aironaai-landing
 git pull
-# nginx ничего перезагружать не нужно — он отдаёт файлы напрямую
+# nginx-контейнер ничего перезагружать не нужно — файлы примонтированы по volume,
+# изменения видны сразу
 ```
 
----
+Если меняли `deploy/docker-compose.yml` или `deploy/nginx.conf` — перезапустить:
+```bash
+docker compose -f deploy/docker-compose.yml restart
+```
 
-## Чек-лист, что попросить у партнёра (бэкендер)
+## Если что-то не так
 
-После того как `aironaai.ru` поднимется, добавить в CORS-whitelist бэкенда:
-- `https://aironaai.ru`
-- `https://www.aironaai.ru`
+**SSL не выпускается / 404 от Traefik:**
+- Проверить что DNS уже резолвится: `dig aironaai.ru +short` с **сервера** (не с Мака — кеш может отличаться)
+- Проверить что Cloudflare proxy ВЫКЛЮЧЕН (серое облачко), если используете CF
+- Логи Traefik: `docker logs n8n-compose-traefik-1 --tail 50 | grep -i error`
 
-Иначе модалка оплаты будет падать с `Disallowed CORS origin`.
+**CORS-ошибки в браузере при попытке оплаты:**
+- Попросить партнёра-бэкендера добавить в whitelist `https://aironaai.ru` и `https://www.aironaai.ru`
 
-И починить обработку 302 от Prodamus (HTTP 502 сейчас).
+**Контейнер не стартует:**
+```bash
+docker compose -f deploy/docker-compose.yml logs --tail 50
+```
+
+## Чек-лист после деплоя
+
+- [ ] DNS aironaai.ru → 209.38.247.138 (проверка `dig`)
+- [ ] Контейнер `aironaai-landing-web-1` запущен и healthy
+- [ ] Traefik получил Let's Encrypt cert (нет ошибок в логах)
+- [ ] Открывается `https://aironaai.ru/`
+- [ ] `https://www.aironaai.ru/` редиректит на apex
+- [ ] Партнёр добавил CORS для нашего домена на backend
+- [ ] Партнёр починил обработку 302 от Prodamus
