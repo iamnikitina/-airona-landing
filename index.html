@@ -235,6 +235,8 @@ section{position:relative}
 .plan .gift-slot{margin-top:var(--s2);min-height:28px;display:flex;align-items:center}
 .plan .gift{display:inline-flex;align-items:center;gap:7px;font-family:'Sora';font-size:12.5px;font-weight:700;color:var(--cyan);background:rgba(34,199,255,.1);border:1px solid rgba(34,199,255,.32);padding:5px 12px;border-radius:100px;letter-spacing:.01em}
 .plan .gift svg{flex:none}
+.plan .ptotal{margin-top:6px;min-height:18px;font-size:13px;color:var(--text-dim);font-weight:500;line-height:1.3}
+.plan .ptotal b{color:var(--text);font-family:'Sora';font-weight:700}
 .price-row{margin-top:var(--s3);display:flex;align-items:baseline;gap:5px;flex-wrap:nowrap;white-space:nowrap}
 .price{font-family:'Sora';font-weight:800;font-size:40px;letter-spacing:-.03em;white-space:nowrap;line-height:1}
 .price .cur{font-size:22px;color:var(--text-dim);font-weight:600}
@@ -1075,6 +1077,7 @@ body.pay-open .pay-modal{display:flex}
       <div class="plan reveal">
         <div class="pname">1 месяц</div>
         <div class="gift-slot">&nbsp;</div>
+        <div class="ptotal">&nbsp;</div>
         <div class="reg-slot"><span class="reg"><span class="old">9 990 ₽</span><span class="lab">обычная цена</span></span></div>
         <div class="price-row"><span class="price val" data-base="9 990" data-offer="9 500">9 500</span><span class="cur">₽</span></div>
         <div class="permo valmo" data-base="9 990 ₽/мес" data-offer="9 500 ₽/мес">9 500 ₽/мес</div>
@@ -1094,6 +1097,7 @@ body.pay-open .pay-modal{display:flex}
       <div class="plan reveal">
         <div class="pname">3 месяца</div>
         <div class="gift-slot">&nbsp;</div>
+        <div class="ptotal">&nbsp;</div>
         <div class="reg-slot"><span class="reg"><span class="old">28 000 ₽</span><span class="lab">обычная цена</span></span></div>
         <div class="price-row"><span class="price val" data-base="28 000" data-offer="24 000">24 000</span><span class="cur">₽</span></div>
         <div class="permo valmo" data-base="≈ 9 333 ₽/мес" data-offer="8 000 ₽/мес">8 000 ₽/мес</div>
@@ -1109,6 +1113,7 @@ body.pay-open .pay-modal{display:flex}
       <div class="plan reveal">
         <div class="pname">6 месяцев</div>
         <div class="gift-slot"><span class="gift"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18M12 8v13M12 8S10.5 3 8 4.5 9.5 8 12 8zM12 8s1.5-5 4-3.5S14.5 8 12 8z"/></svg>+1 месяц в подарок</span></div>
+        <div class="ptotal">= <b>7 месяцев</b> всего</div>
         <div class="reg-slot"><span class="reg"><span class="old">54 000 ₽</span><span class="lab">обычная цена</span></span></div>
         <div class="price-row"><span class="price val" data-base="54 000" data-offer="43 000">43 000</span><span class="cur">₽</span></div>
         <div class="permo valmo" data-base="≈ 7 714 ₽/мес" data-offer="≈ 6 143 ₽/мес">≈ 6 143 ₽/мес</div>
@@ -1126,6 +1131,7 @@ body.pay-open .pay-modal{display:flex}
         <span class="tag">Лучший выбор</span>
         <div class="pname">12 месяцев</div>
         <div class="gift-slot"><span class="gift"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18M12 8v13M12 8S10.5 3 8 4.5 9.5 8 12 8zM12 8s1.5-5 4-3.5S14.5 8 12 8z"/></svg>+2 месяца в подарок</span></div>
+        <div class="ptotal">= <b>14 месяцев</b> всего</div>
         <div class="reg-slot"><span class="reg"><span class="old">97 000 ₽</span><span class="lab">обычная цена</span></span></div>
         <div class="price-row"><span class="price val" data-base="97 000" data-offer="68 000">68 000</span><span class="cur">₽</span></div>
         <div class="permo valmo" data-base="≈ 6 929 ₽/мес" data-offer="≈ 4 857 ₽/мес">≈ 4 857 ₽/мес</div>
