@@ -69,19 +69,21 @@ h1{font-family:'Sora',sans-serif;font-weight:800;font-size:30px;letter-spacing:-
       <div class="step"><span class="n">2</span><span>В боте появится сообщение приветствия — нажми «Старт»</span></div>
       <div class="step"><span class="n">3</span><span>Ответь на вопросы — и получи персональный план</span></div>
     </div>
-    <a id="botBtn" class="btn" style="margin-top:24px" href="https://t.me/aironaai_bot" target="_blank" rel="noopener">
+    <a id="botBtn" class="btn" style="margin-top:24px" href="https://t.me/Airona_ai_bot" target="_blank" rel="noopener">
       Открыть бота в Telegram
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
-    <p class="micro">Если не открывается автоматически — найди бота <a href="https://t.me/aironaai_bot" style="color:var(--cyan)">@aironaai_bot</a> вручную.</p>
+    <p class="micro">Если не открывается автоматически — найди бота <a href="https://t.me/Airona_ai_bot" style="color:var(--cyan)">@Airona_ai_bot</a> вручную.</p>
   </main>
 <script>
 (function(){
-  const BOT = 'aironaai_bot';
+  const BOT = 'Airona_ai_bot';
   let token = '';
   try{
     const url = new URL(window.location.href);
-    token = url.searchParams.get('token') || sessionStorage.getItem('landing_token') || '';
+    token = url.searchParams.get('token')
+         || localStorage.getItem('airona_landing_order_token')
+         || '';
   }catch(_){}
   const btn = document.getElementById('botBtn');
   if(token){

@@ -1519,10 +1519,7 @@ tickTimer();setInterval(tickTimer,1000);
     if(MOCK){
       await new Promise(r=>setTimeout(r, 900));
       const fakeToken = 'demo-' + Math.random().toString(36).slice(2,10);
-      try{
-        sessionStorage.setItem('landing_token', fakeToken);
-        sessionStorage.setItem('landing_plan_sku', currentSku);
-      }catch(_){}
+      try{ localStorage.setItem('airona_landing_order_token', fakeToken); }catch(_){}
       window.location.href = '/pay/success/?token=' + fakeToken;
       return;
     }
@@ -1549,10 +1546,7 @@ tickTimer();setInterval(tickTimer,1000);
       }
       const data = await res.json();
       if(!data.checkout_url) throw new Error('Не получили ссылку на оплату');
-      try{
-        sessionStorage.setItem('landing_token', data.token || '');
-        sessionStorage.setItem('landing_plan_sku', currentSku);
-      }catch(_){}
+      try{ localStorage.setItem('airona_landing_order_token', data.token || ''); }catch(_){}
       window.location.href = data.checkout_url;
     }catch(err){
       showError('Не удалось создать ссылку. ' + (err && err.message ? err.message : '') + ' Попробуйте ещё раз.');
