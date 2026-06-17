@@ -372,7 +372,7 @@ body.offer .tgl::after{transform:translateX(21px)}
 .extra .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:var(--cyan);background:rgba(34,199,255,.1);margin-bottom:14px}
 .extra h4{font-family:'Sora';font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.2}
 .extra p{color:var(--text-dim);font-size:13px;line-height:1.5}
-.extra p .soon{display:inline-block;font-weight:600;font-size:11px;color:var(--text-dim);background:rgba(159,188,220,.1);border:1px solid var(--line);padding:1px 7px;border-radius:6px}
+.soon{display:inline-block;font-weight:600;font-size:11px;color:var(--text-dim);background:rgba(159,188,220,.1);border:1px solid var(--line);padding:1px 7px;border-radius:6px;letter-spacing:.01em}
 
 /* ============ COMPARISON (честная таблица) ============ */
 .ctable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:18px}
@@ -829,7 +829,7 @@ body.pay-open .pay-modal{display:flex}
       <div class="extra reveal">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M9 3l1-1h4l1 1M12 17v.4"/></svg></div>
         <h4>Синхронизация устройств</h4>
-        <p>Garmin, Apple Watch, Oura, Whoop, Polar, Strava, TrainingPeaks. Сон и нагрузка влияют на план.</p>
+        <p><b style="color:var(--cyan)">Garmin</b> и <b style="color:var(--cyan)">TrainingPeaks</b> уже работают; Apple Watch, Oura, Whoop, Polar, Strava <span class="soon">скоро</span>. Сон и нагрузка влияют на план.</p>
       </div>
       <div class="extra reveal">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
@@ -1218,7 +1218,7 @@ body.pay-open .pay-modal{display:flex}
       </details>
       <details class="qa reveal">
         <summary>С какими устройствами работает?<span class="pl"></span></summary>
-        <div class="ans">Garmin, Apple Watch, Oura, Whoop, Polar, Strava, TrainingPeaks — синхронизация автоматическая. Нет гаджета? Можно стартовать по самочувствию и подключить устройство позже.</div>
+        <div class="ans"><b style="color:var(--cyan)">Garmin</b> и <b style="color:var(--cyan)">TrainingPeaks</b> уже работают — синхронизация автоматическая. Apple Watch, Oura, Whoop, Polar, Strava <span class="soon">скоро</span>. Нет гаджета? Можно стартовать по самочувствию и подключить устройство позже.</div>
       </details>
       <details class="qa reveal">
         <summary>А вдруг не подойдёт — я не привяжусь?<span class="pl"></span></summary>
