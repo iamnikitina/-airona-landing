@@ -9,10 +9,8 @@ services:
     image: nginx:alpine
     restart: unless-stopped
     volumes:
-      # Файлы сайта (всё из корня репо, кроме deploy/)
-      - ../assets:/usr/share/nginx/html/assets:ro
-      - ../pay:/usr/share/nginx/html/pay:ro
-      - ../index.html:/usr/share/nginx/html/index.html:ro
+      # Весь корень репо как папка сайта; nginx блокирует .git, deploy, .md
+      - ../:/usr/share/nginx/html:ro
       # Кастомный конфиг nginx внутри контейнера
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     expose:
