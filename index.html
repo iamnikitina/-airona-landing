@@ -257,6 +257,22 @@ body:not(.offer) .save{visibility:hidden}
 .plan li b{color:var(--text);font-weight:600}
 .plan .btn{margin-top:auto}
 
+/* Скрытый тестовый тариф — раскрывается при ?test_tariff=<token> */
+.plan-test{display:none;grid-column:1/-1;background:linear-gradient(90deg, rgba(255,156,64,.12), rgba(34,199,255,.06));border:1px solid rgba(255,180,80,.45);border-radius:var(--radius);padding:26px 28px;position:relative;box-shadow:0 16px 48px -20px rgba(255,156,64,.35)}
+body.test-tariff .plan-test{display:flex;flex-direction:row;align-items:center;gap:var(--s4);flex-wrap:wrap}
+.plan-test::before{content:"⚡ ТЕСТ-ДОСТУП";position:absolute;top:-12px;left:24px;font-family:'Sora';font-size:10.5px;font-weight:800;letter-spacing:.14em;padding:5px 11px;border-radius:6px;background:linear-gradient(135deg,#FF9B40,#FFB766);color:#3a1700;white-space:nowrap}
+.plan-test .test-info{flex:1;min-width:220px}
+.plan-test .test-name{font-family:'Sora';font-weight:700;font-size:21px;color:var(--text);letter-spacing:-.01em;margin-bottom:4px;line-height:1.2}
+.plan-test .test-sub{font-size:13.5px;color:var(--text-dim);line-height:1.45}
+.plan-test .test-price{font-family:'Sora';font-weight:800;font-size:36px;letter-spacing:-.02em;color:var(--text);white-space:nowrap;line-height:1}
+.plan-test .test-price .cur{font-size:22px;color:var(--text-dim);font-weight:600;margin-left:4px}
+.plan-test .btn{flex:none;margin:0;padding:14px 28px}
+@media(max-width:760px){
+  body.test-tariff .plan-test{flex-direction:column;align-items:stretch;text-align:center}
+  .plan-test .test-info{min-width:0}
+  .plan-test .btn{width:100%}
+}
+
 /* offer badge over plans */
 .offer-flag{display:none;justify-content:center;margin-bottom:var(--s4)}
 body.offer .offer-flag{display:flex}
@@ -1143,6 +1159,16 @@ body.pay-open .pay-modal{display:flex}
         </ul>
         <button type="button" class="btn btn-primary btn-block" data-plan="sub_12m">Оформить подписку</button>
       </div>
+
+      <!-- Тестовый доступ — показывается только при ?test_tariff=<token> в URL -->
+      <div class="plan-test reveal">
+        <div class="test-info">
+          <div class="test-name">Тестовый доступ</div>
+          <div class="test-sub">1 месяц подписки · полный функционал · для проверки оплаты и онбординга</div>
+        </div>
+        <div class="test-price">50<span class="cur">₽</span></div>
+        <button type="button" class="btn btn-primary" data-plan="landing_test_50">Оформить тест</button>
+      </div>
     </div>
 
   </div>
@@ -1402,7 +1428,9 @@ tickTimer();setInterval(tickTimer,1000);
 /* ===== payment modal + checkout ===== */
 (function(){
   const API_URL = 'https://bot.aironaai.ru/api/v1/landing/checkout';
-  const MOCK = new URLSearchParams(location.search).has('mock');
+  const params = new URLSearchParams(location.search);
+  const MOCK = params.has('mock');
+  const TEST_TARIFF_TOKEN = params.get('test_tariff');
 
   if(MOCK){
     const b = document.createElement('div');
@@ -1411,11 +1439,16 @@ tickTimer();setInterval(tickTimer,1000);
     document.body.appendChild(b);
     document.body.style.paddingTop = '30px';
   }
+
+  if(TEST_TARIFF_TOKEN){
+    document.body.classList.add('test-tariff');
+  }
   const PLANS = {
     sub_1m:  { name: '1 месяц',    base: '9 990 ₽',  offer: '9 500 ₽' },
     sub_3m:  { name: '3 месяца',   base: '28 000 ₽', offer: '24 000 ₽' },
     sub_6m:  { name: '6 месяцев',  base: '54 000 ₽', offer: '43 000 ₽' },
     sub_12m: { name: '12 месяцев', base: '97 000 ₽', offer: '68 000 ₽' },
+    landing_test_50: { name: 'Тестовый доступ · 1 месяц', base: '50 ₽', offer: '50 ₽' },
   };
 
   const modal    = document.getElementById('payModal');
@@ -1494,16 +1527,21 @@ tickTimer();setInterval(tickTimer,1000);
       return;
     }
 
+    const reqBody = {
+      plan_sku: currentSku,
+      phone: phone,
+      telegram_username: tg || null,
+      addons: [],
+    };
+    if(currentSku === 'landing_test_50' && TEST_TARIFF_TOKEN){
+      reqBody.test_tariff_token = TEST_TARIFF_TOKEN;
+    }
+
     try{
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-          plan_sku: currentSku,
-          phone: phone,
-          telegram_username: tg || null,
-          addons: [],
-        }),
+        body: JSON.stringify(reqBody),
       });
       if(!res.ok){
         const txt = await res.text().catch(()=> '');
