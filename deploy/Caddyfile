@@ -1,0 +1,49 @@
+# Caddyfile для российского зеркала на ru.aironaai.ru
+# Один процесс, авто-SSL через Let's Encrypt, никаких Traefik
+
+ru.aironaai.ru, www.ru.aironaai.ru {
+    root * /srv
+    encode gzip zstd
+
+    # Блокируем служебные файлы и папки
+    @hidden {
+        path /.git*
+        path /deploy/*
+        path *.md
+        path *.yml
+        path *.yaml
+        path *.conf
+        path *.toml
+        path *.env
+    }
+    respond @hidden 404
+
+    # Маршрутизация (pretty URLs, /pay/success → /pay/success/index.html)
+    try_files {path} {path}/ {path}/index.html {path}.html
+
+    file_server
+
+    # Кеш для статики
+    @static {
+        path *.css *.js *.woff *.woff2 *.ttf *.otf *.eot
+    }
+    header @static Cache-Control "public, max-age=2592000, immutable"
+
+    @images {
+        path *.png *.jpg *.jpeg *.webp *.gif *.svg *.ico
+    }
+    header @images Cache-Control "public, max-age=2592000"
+
+    # Security headers
+    header {
+        X-Frame-Options "SAMEORIGIN"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "geolocation=(), microphone=(), camera=()"
+        -Server
+    }
+
+    # www → apex редирект
+    @www host www.ru.aironaai.ru
+    redir @www https://ru.aironaai.ru{uri} permanent
+}

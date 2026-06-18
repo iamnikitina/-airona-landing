@@ -1,0 +1,24 @@
+# Зеркало на ru.aironaai.ru (Selectel, Москва)
+# Один контейнер Caddy: статика + авто-SSL Let's Encrypt
+# Запуск: docker compose -f deploy/docker-compose.ru.yml up -d
+
+name: aironaai-ru-mirror
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Корень репо как папка сайта (Caddyfile фильтрует служебные файлы)
+      - ../:/srv:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # SSL-сертификаты и состояние Caddy
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
