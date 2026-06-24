@@ -230,6 +230,19 @@ section{position:relative}
   background:var(--card);border:1px solid var(--line);color:var(--text-dim);font-size:15px;
 }
 
+/* Компактный chip для триала (hero и final CTA) */
+.trial-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 20px;border-radius:12px;
+  background:rgba(255,156,64,.12);border:1px solid rgba(255,180,80,.42);
+  font-family:'Sora';font-weight:600;font-size:14.5px;
+  color:#FFB766;text-decoration:none;letter-spacing:.01em;
+  transition:background .2s,border-color .2s,transform .2s
+}
+.trial-chip:hover{background:rgba(255,156,64,.2);border-color:rgba(255,180,80,.65);transform:translateY(-2px);text-decoration:none}
+.trial-chip .arr{font-weight:800;margin-left:2px}
+.trial-chip b{color:#FFD9A1;font-weight:800}
+
 /* CTA для бесплатного триала перед тарифами */
 .trial-banner{
   display:flex;align-items:center;gap:18px;max-width:760px;margin:0 auto var(--s5);
@@ -737,6 +750,7 @@ body.pay-open .pay-modal{display:flex}
 
       <div class="hero-actions reveal">
         <a href="#plans" class="btn btn-primary">Оформить подписку</a>
+        <a class="trial-chip" href="https://t.me/aironaai_bot" target="_blank" rel="noopener">🎁 <b>Бесплатно 3 дня</b> в боте<span class="arr">→</span></a>
         <span class="hero-micro">Отмена в 1 клик · заморозка 5 дней в месяц</span>
       </div>
     </div>
@@ -1331,6 +1345,9 @@ body.pay-open .pay-modal{display:flex}
       <h2>Доберись до финиша — без выгорания и травм</h2>
       <p>Присоединяйся к 1000+ спортсменам, которые тренируются по системе чемпиона мира и живут полной жизнью.</p>
       <a href="#plans" class="btn btn-primary" style="font-size:18px;padding:18px 38px">Оформить подписку</a>
+      <div style="margin-top:16px;position:relative">
+        <a class="trial-chip" href="https://t.me/aironaai_bot" target="_blank" rel="noopener">🎁 Или попробуй <b>3 дня бесплатно</b> в боте<span class="arr">→</span></a>
+      </div>
       <div class="consent">
         <p class="consent-note">Нажимая кнопку, я соглашаюсь с <a href="policy.html">Политикой конфиденциальности</a> и даю <a href="consent.html">Согласие на обработку персональных данных</a>.</p>
         <label class="consent-check">
