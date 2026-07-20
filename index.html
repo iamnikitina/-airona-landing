@@ -88,6 +88,8 @@ a{color:inherit;text-decoration:none}
 
 /* ============ TOP TRIAL BAR ============ */
 .topbar{display:block;background:linear-gradient(90deg,#FF9B40,#FFB766 50%,#FF9B40);color:#3a1700;text-decoration:none;font-family:'Sora';font-weight:600;font-size:13.5px;padding:10px 16px;text-align:center;position:fixed;top:0;left:0;right:0;z-index:60;letter-spacing:.01em;transition:filter .2s;box-shadow:0 2px 12px -2px rgba(255,156,64,.45)}
+.topbar-bday{background:linear-gradient(90deg,#FF6B9A,#FFB766 40%,#FF9B40 70%,#FF6B9A);background-size:200% 100%;animation:bdayShimmer 6s linear infinite;color:#3a0018;box-shadow:0 2px 14px -2px rgba(255,107,154,.5)}
+@keyframes bdayShimmer{from{background-position:0% 0%}to{background-position:200% 0%}}
 .topbar:hover{filter:brightness(1.06);text-decoration:none}
 .topbar-inner{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;line-height:1.3}
 .topbar b{font-weight:800}
@@ -135,6 +137,10 @@ header.site.scrolled{
 .hero-inner{position:relative;z-index:2;width:100%;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s6)}
 .hero-text{max-width:720px}
 .eyebrow{margin-bottom:var(--s3)}
+.bday-hero-chip{display:inline-flex;align-items:center;gap:8px;margin:0 0 var(--s3);padding:9px 16px;border-radius:100px;background:linear-gradient(135deg,rgba(255,107,154,.18),rgba(255,156,64,.18));border:1px solid rgba(255,180,80,.5);color:#FFD9A1;font-family:'Sora';font-weight:600;font-size:14px;letter-spacing:.01em;text-decoration:none;backdrop-filter:blur(8px);transition:transform .2s,border-color .2s}
+.bday-hero-chip:hover{transform:translateY(-2px);border-color:rgba(255,180,80,.75);text-decoration:none}
+.bday-hero-chip b{color:#fff;font-weight:800}
+.bday-hero-chip .arr{font-weight:800;color:#fff}
 .hero h1{font-size:clamp(30px,3.9vw,52px);font-weight:800;max-width:17ch;text-wrap:balance}
 .hero h1 .hl{background:linear-gradient(100deg,var(--cyan),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero .sub{margin-top:var(--s3);font-size:clamp(16px,1.4vw,19px);color:var(--text-dim);max-width:52ch}
@@ -690,12 +696,12 @@ body.pay-open .pay-modal{display:flex}
 </head>
 <body>
 
-<!-- ============ TOP TRIAL BAR ============ -->
-<a class="topbar" href="https://t.me/aironaai_bot" target="_blank" rel="noopener">
+<!-- ============ TOP BAR (birthday sale) ============ -->
+<a class="topbar topbar-bday" href="#plans">
   <span class="topbar-inner">
-    🎁
-    <span><b>Бесплатно 3 дня</b> в Telegram-боте · без оплаты и карты</span>
-    <span class="topbar-arrow">Попробовать →</span>
+    🎂
+    <span><b>−41% в честь 41-летия Кирилла</b> · до 24 июля 23:59</span>
+    <span class="topbar-arrow">К тарифам →</span>
   </span>
 </a>
 
@@ -725,6 +731,8 @@ body.pay-open .pay-modal{display:flex}
     <div class="hero-text">
       <span class="eyebrow reveal">виртуальный тренер по триатлону</span>
 
+      <a href="#plans" class="bday-hero-chip reveal">🎂 <b>−41% в честь дня рождения Кирилла</b> · до 24 июля <span class="arr">→</span></a>
+
       <h1 class="reveal">Триатлон, который <span class="hl">вписывается в твою жизнь</span> — по системе чемпиона мира</h1>
 
       <p class="sub reveal">виртуальный тренер: собирает твой план из тренировок Кирилла Голдовского, дважды чемпиона мира, и каждую неделю подстраивает под твой график и самочувствие.</p>
@@ -736,7 +744,7 @@ body.pay-open .pay-modal{display:flex}
       </div>
 
       <div class="timer reveal" id="timer">
-        <div class="lbl"><b>Только для эфира</b>спеццена действует до 21 июня</div>
+        <div class="lbl"><b>🎂 41-летие Кирилла</b>−41% на все тарифы до 24 июля 23:59</div>
         <div class="clock">
           <div class="u"><div class="n" id="t-d">00</div><div class="t">дней</div></div>
           <div class="sep">:</div>
@@ -1001,7 +1009,7 @@ body.pay-open .pay-modal{display:flex}
 
     <div class="cprice reveal">
       <div class="cpr"><div class="pl">Приложения с планами</div><div class="pv">1–3 тыс ₽/мес</div></div>
-      <div class="cpr air"><div class="pl">АИРОНА</div><div class="pv">от 5 557 ₽/мес</div></div>
+      <div class="cpr air"><div class="pl">АИРОНА <span style="color:#FFB766">🎂 −41%</span></div><div class="pv">от 3 279 ₽/мес</div></div>
       <div class="cpr"><div class="pl">Тренер уровня Кирилла</div><div class="pv">от 60 000 ₽/мес</div></div>
     </div>
 
@@ -1165,7 +1173,7 @@ body.pay-open .pay-modal{display:flex}
     </a>
 
     <div class="offer-flag reveal">
-      <span class="chip"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)"></span>Спеццена участникам эфира — действует до 21 июня 23:59</span>
+      <span class="chip" style="background:linear-gradient(135deg,rgba(255,156,64,.18),rgba(255,120,180,.14));border-color:rgba(255,180,80,.5);color:#FFD9A1;font-size:15px;padding:12px 22px">🎂 <b style="color:#fff;font-weight:800">−41% в честь 41-летия Кирилла</b> · до 24 июля 23:59</span>
     </div>
 
     <div class="plans">
@@ -1174,10 +1182,10 @@ body.pay-open .pay-modal{display:flex}
         <div class="pname">1 месяц</div>
         <div class="gift-slot">&nbsp;</div>
         <div class="ptotal">&nbsp;</div>
-        <div class="reg-slot">&nbsp;</div>
-        <div class="price-row"><span class="price val" data-base="9 900" data-offer="9 900">9 900</span><span class="cur">₽</span></div>
-        <div class="permo valmo" data-base="9 900 ₽/мес" data-offer="9 900 ₽/мес">9 900 ₽/мес</div>
-        <div class="save-slot">&nbsp;</div>
+        <div class="reg-slot"><span class="reg"><span class="old">9 900 ₽</span><span class="lab">обычная цена</span></span></div>
+        <div class="price-row"><span class="price val" data-base="9 900" data-offer="5 800">5 800</span><span class="cur">₽</span></div>
+        <div class="permo valmo" data-base="9 900 ₽/мес" data-offer="5 800 ₽/мес">5 800 ₽/мес</div>
+        <div class="save-slot"><span class="save">экономия <b>4 100 ₽</b></span></div>
         <ul>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><b>Персональный план по методике Кирилла:</b> 7 уровней, 4 дисциплины + ОФП, видеотехника</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Адаптация под жизнь (6 типов реакции)</li>
@@ -1194,10 +1202,10 @@ body.pay-open .pay-modal{display:flex}
         <div class="pname">3 месяца</div>
         <div class="gift-slot">&nbsp;</div>
         <div class="ptotal">&nbsp;</div>
-        <div class="reg-slot">&nbsp;</div>
-        <div class="price-row"><span class="price val" data-base="27 000" data-offer="27 000">27 000</span><span class="cur">₽</span></div>
-        <div class="permo valmo" data-base="9 000 ₽/мес" data-offer="9 000 ₽/мес">9 000 ₽/мес</div>
-        <div class="save-slot"><span class="save">экономия <b>2 700 ₽</b></span></div>
+        <div class="reg-slot"><span class="reg"><span class="old">27 000 ₽</span><span class="lab">обычная цена</span></span></div>
+        <div class="price-row"><span class="price val" data-base="27 000" data-offer="15 900">15 900</span><span class="cur">₽</span></div>
+        <div class="permo valmo" data-base="9 000 ₽/мес" data-offer="5 300 ₽/мес">5 300 ₽/мес</div>
+        <div class="save-slot"><span class="save">экономия <b>11 100 ₽</b></span></div>
         <ul>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Всё из тарифа «1 месяц»</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><b>1 консультация или групповая тренировка с Кириллом</b></li>
@@ -1210,10 +1218,10 @@ body.pay-open .pay-modal{display:flex}
         <div class="pname">6 месяцев</div>
         <div class="gift-slot"><span class="gift"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18M12 8v13M12 8S10.5 3 8 4.5 9.5 8 12 8zM12 8s1.5-5 4-3.5S14.5 8 12 8z"/></svg>+1 месяц в подарок</span></div>
         <div class="ptotal">= <b>7 месяцев</b> всего</div>
-        <div class="reg-slot">&nbsp;</div>
-        <div class="price-row"><span class="price val" data-base="48 900" data-offer="48 900">48 900</span><span class="cur">₽</span></div>
-        <div class="permo valmo" data-base="≈ 6 986 ₽/мес" data-offer="≈ 6 986 ₽/мес">≈ 6 986 ₽/мес</div>
-        <div class="save-slot"><span class="save">экономия <b>10 500 ₽</b></span></div>
+        <div class="reg-slot"><span class="reg"><span class="old">48 900 ₽</span><span class="lab">обычная цена</span></span></div>
+        <div class="price-row"><span class="price val" data-base="48 900" data-offer="28 800">28 800</span><span class="cur">₽</span></div>
+        <div class="permo valmo" data-base="≈ 6 986 ₽/мес" data-offer="≈ 4 114 ₽/мес">≈ 4 114 ₽/мес</div>
+        <div class="save-slot"><span class="save">экономия <b>20 100 ₽</b></span></div>
         <ul>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Всё из тарифа «3 месяца»</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>2 консультации / групповые тренировки + транзитная зона</li>
@@ -1228,10 +1236,10 @@ body.pay-open .pay-modal{display:flex}
         <div class="pname">12 месяцев</div>
         <div class="gift-slot"><span class="gift"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18M12 8v13M12 8S10.5 3 8 4.5 9.5 8 12 8zM12 8s1.5-5 4-3.5S14.5 8 12 8z"/></svg>+2 месяца в подарок</span></div>
         <div class="ptotal">= <b>14 месяцев</b> всего</div>
-        <div class="reg-slot">&nbsp;</div>
-        <div class="price-row"><span class="price val" data-base="77 800" data-offer="77 800">77 800</span><span class="cur">₽</span></div>
-        <div class="permo valmo" data-base="≈ 5 557 ₽/мес" data-offer="≈ 5 557 ₽/мес">≈ 5 557 ₽/мес</div>
-        <div class="save-slot"><span class="save">экономия <b>41 000 ₽</b></span></div>
+        <div class="reg-slot"><span class="reg"><span class="old">77 800 ₽</span><span class="lab">обычная цена</span></span></div>
+        <div class="price-row"><span class="price val" data-base="77 800" data-offer="45 900">45 900</span><span class="cur">₽</span></div>
+        <div class="permo valmo" data-base="≈ 5 557 ₽/мес" data-offer="≈ 3 279 ₽/мес">≈ 3 279 ₽/мес</div>
+        <div class="save-slot"><span class="save">экономия <b>31 900 ₽</b></span></div>
         <ul>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Всё из тарифа «6 месяцев»</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>5 консультаций / групповых тренировок + транзитная зона</li>
@@ -1449,7 +1457,7 @@ body.pay-open .pay-modal{display:flex}
 /* ===== OFFER_ACTIVE flag =====
    Прод-версия: режим оффера вебинара зафиксирован включённым.
    Чтобы выключить — поставьте OFFER_ACTIVE = false (будет отдельная версия). */
-const OFFER_ACTIVE = false;
+const OFFER_ACTIVE = true;
 
 function applyOffer(){
   document.body.classList.toggle('offer', OFFER_ACTIVE);
@@ -1479,8 +1487,8 @@ const cio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){co
 document.querySelectorAll('.cnt').forEach(el=>cio.observe(el));
 
 /* ===== countdown timer (offer) ===== */
-// Оффер действует до 21 июня 2026, 23:59 (мск, UTC+3)
-const deadline = new Date('2026-06-21T23:59:00+03:00').getTime();
+// Распродажа в честь ДР Кирилла: до 24 июля 2026, 23:59 (мск, UTC+3)
+const deadline = new Date('2026-07-24T23:59:00+03:00').getTime();
 function pad(n){return String(n).padStart(2,'0')}
 function tickTimer(){
   let diff=Math.max(0,deadline-Date.now());
@@ -1526,10 +1534,10 @@ tickTimer();setInterval(tickTimer,1000);
     document.body.classList.add('test-tariff');
   }
   const PLANS = {
-    sub_1m:  { name: '1 месяц',    base: '9 900 ₽',  offer: '9 900 ₽' },
-    sub_3m:  { name: '3 месяца',   base: '27 000 ₽', offer: '27 000 ₽' },
-    sub_6m:  { name: '6 месяцев',  base: '48 900 ₽', offer: '48 900 ₽' },
-    sub_12m: { name: '12 месяцев', base: '77 800 ₽', offer: '77 800 ₽' },
+    sub_1m:  { name: '1 месяц',    base: '9 900 ₽',  offer: '5 800 ₽' },
+    sub_3m:  { name: '3 месяца',   base: '27 000 ₽', offer: '15 900 ₽' },
+    sub_6m:  { name: '6 месяцев',  base: '48 900 ₽', offer: '28 800 ₽' },
+    sub_12m: { name: '12 месяцев', base: '77 800 ₽', offer: '45 900 ₽' },
     landing_test_50: { name: 'Тестовый доступ · 1 месяц', base: '50 ₽', offer: '50 ₽' },
   };
 
