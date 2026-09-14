@@ -307,6 +307,19 @@ body.offer .reg{display:inline-flex;align-items:baseline;gap:7px}
 .plan li b{color:var(--text);font-weight:600}
 .plan .btn{margin-top:auto}
 
+/* Уведомление о временно недоступной онлайн-оплате */
+.pay-notice{display:flex;align-items:center;gap:var(--s3);margin:0 0 var(--s4);padding:20px 24px;background:linear-gradient(90deg,rgba(34,199,255,.10),rgba(60,120,255,.06));border:1px solid rgba(34,199,255,.35);border-radius:var(--radius);box-shadow:0 16px 48px -24px rgba(34,199,255,.35)}
+.pay-notice-icon{flex:none;font-size:28px;line-height:1}
+.pay-notice-body{flex:1;min-width:0}
+.pay-notice-title{font-family:'Sora';font-weight:700;font-size:17px;line-height:1.2;letter-spacing:-.01em;color:var(--text);margin-bottom:4px}
+.pay-notice-sub{font-size:14px;color:var(--text-dim);line-height:1.5}
+.pay-notice-cta{flex:none;white-space:nowrap;padding:12px 22px;font-size:15px}
+@media(max-width:640px){
+  .pay-notice{flex-direction:column;align-items:stretch;text-align:center;padding:18px 20px}
+  .pay-notice-icon{align-self:center}
+  .pay-notice-cta{width:100%}
+}
+
 /* Скрытый тестовый тариф — раскрывается при ?test_tariff=<token> */
 .plan-test{display:none;grid-column:1/-1;background:linear-gradient(90deg, rgba(255,156,64,.12), rgba(34,199,255,.06));border:1px solid rgba(255,180,80,.45);border-radius:var(--radius);padding:26px 28px;position:relative;box-shadow:0 16px 48px -20px rgba(255,156,64,.35)}
 body.test-tariff .plan-test{display:flex;flex-direction:row;align-items:center;gap:var(--s4);flex-wrap:wrap}
@@ -641,40 +654,6 @@ footer.site{border-top:1px solid var(--line-soft);padding:var(--s6) 0 var(--s5);
   html{scroll-behavior:auto}
 }
 
-/* ============ PAYMENT MODAL ============ */
-.pay-modal{position:fixed;inset:0;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:max(20px,env(safe-area-inset-top)) 20px 20px;overflow-y:auto}
-body.pay-open{overflow:hidden}
-body.pay-open .pay-modal{display:flex}
-.pay-back{position:fixed;inset:0;background:rgba(4,12,28,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:payFade .25s ease-out}
-.pay-card{position:relative;width:100%;max-width:460px;margin:auto;background:linear-gradient(180deg,rgba(11,30,64,.98),rgba(6,17,42,.98));border:1px solid rgba(34,199,255,.3);border-radius:22px;padding:32px 28px 26px;box-shadow:0 40px 100px -20px rgba(0,0,0,.7),0 0 0 1px rgba(34,199,255,.08);animation:payIn .35s cubic-bezier(.2,.7,.2,1)}
-@keyframes payFade{from{opacity:0}to{opacity:1}}
-@keyframes payIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
-.pay-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:10px;background:rgba(159,188,220,.08);border:1px solid var(--line);color:var(--text-dim);cursor:pointer;display:grid;place-items:center;font-size:22px;line-height:1;transition:background .2s,color .2s,border-color .2s}
-.pay-close:hover{background:rgba(34,199,255,.12);color:var(--cyan);border-color:rgba(34,199,255,.4)}
-.pay-head{margin-bottom:22px;padding-right:36px}
-.pay-eyebrow{font-family:'Sora';font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
-.pay-plan-name{font-family:'Sora';font-weight:700;font-size:22px;line-height:1.15;letter-spacing:-.01em;margin-bottom:6px}
-.pay-plan-price{font-family:'Sora';font-weight:800;font-size:30px;letter-spacing:-.02em;background:linear-gradient(100deg,var(--cyan),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
-.pay-form{display:flex;flex-direction:column;gap:14px}
-.pay-field{display:flex;flex-direction:column;gap:7px}
-.pay-lbl{font-family:'Sora';font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--text-dim);text-transform:uppercase}
-.pay-opt{font-family:'Manrope';font-size:11px;font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:6px}
-.pay-field input[type=tel],.pay-field input[type=text]{font-family:'Manrope';font-size:16px;font-weight:500;color:var(--text);background:rgba(255,255,255,.04);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;outline:none;transition:border-color .2s,background .2s}
-.pay-field input:focus{border-color:rgba(34,199,255,.55);background:rgba(34,199,255,.04)}
-.pay-field input::placeholder{color:var(--muted)}
-.pay-check{display:flex;align-items:flex-start;gap:11px;margin-top:6px;cursor:pointer;font-size:12.5px;color:var(--text-dim);line-height:1.5}
-.pay-check input{appearance:none;-webkit-appearance:none;flex:none;width:20px;height:20px;border-radius:6px;border:1.5px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;position:relative;transition:background .2s,border-color .2s;margin-top:1px}
-.pay-check input:checked{background:linear-gradient(135deg,var(--cyan),var(--blue));border-color:transparent}
-.pay-check input:checked::after{content:"";position:absolute;left:6px;top:2.5px;width:5px;height:10px;border:solid #04101f;border-width:0 2.4px 2.4px 0;transform:rotate(45deg)}
-.pay-check a{color:var(--cyan);text-decoration:underline;text-underline-offset:2px}
-.pay-error{margin-top:4px;padding:10px 14px;border-radius:10px;background:rgba(220,80,80,.12);border:1px solid rgba(220,80,80,.4);color:#ffb4b4;font-size:13.5px;line-height:1.4}
-.pay-submit{margin-top:6px}
-.pay-submit[disabled]{opacity:.7;cursor:wait}
-.pay-micro{margin-top:4px;font-size:12px;color:var(--muted);text-align:center;line-height:1.45}
-@media(max-width:480px){
-  .pay-card{padding:26px 20px 22px;border-radius:20px}
-  .pay-plan-price{font-size:26px}
-}
 </style>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
@@ -1168,6 +1147,15 @@ body.pay-open .pay-modal{display:flex}
       <span class="chip"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)"></span>Спеццена участникам эфира — действует до 21 июня 23:59</span>
     </div>
 
+    <div class="pay-notice reveal">
+      <div class="pay-notice-icon">💬</div>
+      <div class="pay-notice-body">
+        <div class="pay-notice-title">Онлайн-оплата временно недоступна</div>
+        <div class="pay-notice-sub">Чтобы оформить подписку, напишите Кириллу Голдовскому в Telegram — он поможет с выбором тарифа и оплатой.</div>
+      </div>
+      <a class="btn btn-primary pay-notice-cta" href="https://t.me/Goldovskii_Kirill" target="_blank" rel="noopener">Написать Кириллу</a>
+    </div>
+
     <div class="plans">
       <!-- 1 месяц -->
       <div class="plan reveal">
@@ -1186,7 +1174,7 @@ body.pay-open .pay-modal{display:flex}
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Еженедельный живой Q&amp;A с Кириллом</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Заморозка 5 дней в месяц</li>
         </ul>
-        <button type="button" class="btn btn-ghost btn-block" data-plan="sub_1m">Оформить</button>
+        <a class="btn btn-ghost btn-block" href="https://t.me/Goldovskii_Kirill" target="_blank" rel="noopener">Написать Кириллу</a>
       </div>
 
       <!-- 3 месяца -->
@@ -1202,7 +1190,7 @@ body.pay-open .pay-modal{display:flex}
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Всё из тарифа «1 месяц»</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><b>1 консультация или групповая тренировка с Кириллом</b></li>
         </ul>
-        <button type="button" class="btn btn-ghost btn-block" data-plan="sub_3m">Оформить</button>
+        <a class="btn btn-ghost btn-block" href="https://t.me/Goldovskii_Kirill" target="_blank" rel="noopener">Написать Кириллу</a>
       </div>
 
       <!-- 6 месяцев -->
@@ -1219,7 +1207,7 @@ body.pay-open .pay-modal{display:flex}
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>2 консультации / групповые тренировки + транзитная зона</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Заморозка суммируется</li>
         </ul>
-        <button type="button" class="btn btn-ghost btn-block" data-plan="sub_6m">Оформить</button>
+        <a class="btn btn-ghost btn-block" href="https://t.me/Goldovskii_Kirill" target="_blank" rel="noopener">Написать Кириллу</a>
       </div>
 
       <!-- 12 месяцев — BEST -->
@@ -1237,7 +1225,7 @@ body.pay-open .pay-modal{display:flex}
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>5 консультаций / групповых тренировок + транзитная зона</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>Приоритет на новые функции</li>
         </ul>
-        <button type="button" class="btn btn-primary btn-block" data-plan="sub_12m">Оформить подписку</button>
+        <a class="btn btn-primary btn-block" href="https://t.me/Goldovskii_Kirill" target="_blank" rel="noopener">Написать Кириллу</a>
       </div>
 
       <!-- Тестовый доступ — показывается только при ?test_tariff=<token> в URL -->
@@ -1247,7 +1235,7 @@ body.pay-open .pay-modal{display:flex}
           <div class="test-sub">1 месяц подписки · полный функционал · для проверки оплаты и онбординга</div>
         </div>
         <div class="test-price">50<span class="cur">₽</span></div>
-        <button type="button" class="btn btn-primary" data-plan="landing_test_50">Оформить тест</button>
+        <a class="btn btn-primary" href="https://t.me/Goldovskii_Kirill" target="_blank" rel="noopener">Написать Кириллу</a>
       </div>
     </div>
 
@@ -1408,36 +1396,6 @@ body.pay-open .pay-modal{display:flex}
   <a href="#plans" class="btn btn-primary">Оформить подписку</a>
 </div>
 
-<!-- ============ PAYMENT MODAL ============ -->
-<div class="pay-modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payPlanName" aria-hidden="true">
-  <div class="pay-back" data-close></div>
-  <div class="pay-card">
-    <button class="pay-close" type="button" data-close aria-label="Закрыть">×</button>
-    <div class="pay-head">
-      <div class="pay-eyebrow">Оформление подписки</div>
-      <div class="pay-plan-name" id="payPlanName">Тариф</div>
-      <div class="pay-plan-price" id="payPlanPrice">— ₽</div>
-    </div>
-    <form class="pay-form" id="payForm" novalidate>
-      <label class="pay-field">
-        <span class="pay-lbl">Телефон</span>
-        <input type="tel" name="phone" id="payPhone" placeholder="+7 999 123-45-67" required autocomplete="tel" inputmode="tel">
-      </label>
-      <label class="pay-field">
-        <span class="pay-lbl">Telegram<span class="pay-opt">необязательно — для автопривязки</span></span>
-        <input type="text" name="telegram_username" id="payTg" placeholder="username (без @)" autocomplete="off">
-      </label>
-      <label class="pay-check">
-        <input type="checkbox" id="payConsent" required checked>
-        <span>Согласен с <a href="policy.html" target="_blank" rel="noopener">политикой</a> и <a href="consent.html" target="_blank" rel="noopener">обработкой персональных данных</a></span>
-      </label>
-      <div class="pay-error" id="payError" hidden></div>
-      <button type="submit" class="btn btn-primary btn-block pay-submit" id="paySubmit">Перейти к оплате</button>
-      <p class="pay-micro">Безопасная оплата на сайте Prodamus. Отмена в 1 клик в профиле бота.</p>
-    </form>
-  </div>
-</div>
-
 <!-- ============ COOKIE BANNER ============ -->
 <div class="cookie hide" id="cookieBanner" role="dialog" aria-label="Использование cookie">
   <p>Мы используем cookie для работы сайта и аналитики. Продолжая, вы соглашаетесь с этим. Подробнее — в <a href="policy.html">Политике конфиденциальности</a> (раздел «Файлы cookie»).</p>
@@ -1507,135 +1465,12 @@ tickTimer();setInterval(tickTimer,1000);
   });
 })();
 
-/* ===== payment modal + checkout ===== */
+/* ===== test-tariff url flag (оплата отключена — сохраняем только раскрытие блока) ===== */
 (function(){
-  const API_URL = 'https://bot.aironaai.ru/api/v1/landing/checkout';
   const params = new URLSearchParams(location.search);
-  const MOCK = params.has('mock');
-  const TEST_TARIFF_TOKEN = params.get('test_tariff');
-
-  if(MOCK){
-    const b = document.createElement('div');
-    b.textContent = '🧪 MOCK MODE — реальные платежи отключены, кнопки имитируют успех';
-    b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:200;padding:8px 16px;background:linear-gradient(90deg,#ff8a00,#e52e71);color:#fff;font:600 12px/1.3 Sora,system-ui;text-align:center;letter-spacing:.02em';
-    document.body.appendChild(b);
-    document.body.style.paddingTop = '30px';
-  }
-
-  if(TEST_TARIFF_TOKEN){
+  if(params.get('test_tariff')){
     document.body.classList.add('test-tariff');
   }
-  const PLANS = {
-    sub_1m:  { name: '1 месяц',    base: '9 900 ₽',  offer: '9 900 ₽' },
-    sub_3m:  { name: '3 месяца',   base: '27 000 ₽', offer: '27 000 ₽' },
-    sub_6m:  { name: '6 месяцев',  base: '48 900 ₽', offer: '48 900 ₽' },
-    sub_12m: { name: '12 месяцев', base: '77 800 ₽', offer: '77 800 ₽' },
-    landing_test_50: { name: 'Тестовый доступ · 1 месяц', base: '50 ₽', offer: '50 ₽' },
-  };
-
-  const modal    = document.getElementById('payModal');
-  const nameEl   = document.getElementById('payPlanName');
-  const priceEl  = document.getElementById('payPlanPrice');
-  const form     = document.getElementById('payForm');
-  const phoneEl  = document.getElementById('payPhone');
-  const tgEl     = document.getElementById('payTg');
-  const consentEl= document.getElementById('payConsent');
-  const errorEl  = document.getElementById('payError');
-  const submitEl = document.getElementById('paySubmit');
-  let currentSku = null;
-
-  function openModal(sku){
-    const plan = PLANS[sku];
-    if(!plan) return;
-    currentSku = sku;
-    nameEl.textContent  = plan.name;
-    priceEl.textContent = document.body.classList.contains('offer') ? plan.offer : plan.base;
-    errorEl.hidden = true;
-    submitEl.disabled = false;
-    submitEl.textContent = 'Перейти к оплате';
-    document.body.classList.add('pay-open');
-    modal.setAttribute('aria-hidden','false');
-    setTimeout(()=>phoneEl.focus(), 250);
-  }
-  function closeModal(){
-    document.body.classList.remove('pay-open');
-    modal.setAttribute('aria-hidden','true');
-    currentSku = null;
-  }
-
-  document.querySelectorAll('[data-plan]').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{ e.preventDefault(); openModal(btn.dataset.plan); });
-  });
-  modal.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click', closeModal));
-  document.addEventListener('keydown', (e)=>{
-    if(e.key==='Escape' && document.body.classList.contains('pay-open')) closeModal();
-  });
-
-  function showError(msg){
-    errorEl.textContent = msg;
-    errorEl.hidden = false;
-  }
-
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    if(!currentSku) return;
-    errorEl.hidden = true;
-
-    const phone = phoneEl.value.trim();
-    const tg = tgEl.value.trim().replace(/^@+/,'');
-    const phoneDigits = phone.replace(/\D/g,'');
-
-    if(phoneDigits.length < 10){
-      showError('Укажите корректный номер телефона');
-      phoneEl.focus();
-      return;
-    }
-    if(!consentEl.checked){
-      showError('Нужно согласие на обработку данных');
-      return;
-    }
-
-    submitEl.disabled = true;
-    submitEl.textContent = 'Создаём ссылку…';
-
-    if(MOCK){
-      await new Promise(r=>setTimeout(r, 900));
-      const fakeToken = 'demo-' + Math.random().toString(36).slice(2,10);
-      try{ localStorage.setItem('airona_landing_order_token', fakeToken); }catch(_){}
-      window.location.href = '/pay/success/?token=' + fakeToken;
-      return;
-    }
-
-    const reqBody = {
-      plan_sku: currentSku,
-      phone: phone,
-      telegram_username: tg || null,
-      addons: [],
-    };
-    if(currentSku === 'landing_test_50' && TEST_TARIFF_TOKEN){
-      reqBody.test_tariff_token = TEST_TARIFF_TOKEN;
-    }
-
-    try{
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify(reqBody),
-      });
-      if(!res.ok){
-        const txt = await res.text().catch(()=> '');
-        throw new Error(txt || ('Ошибка ' + res.status));
-      }
-      const data = await res.json();
-      if(!data.checkout_url) throw new Error('Не получили ссылку на оплату');
-      try{ localStorage.setItem('airona_landing_order_token', data.token || ''); }catch(_){}
-      window.location.href = data.checkout_url;
-    }catch(err){
-      showError('Не удалось создать ссылку. ' + (err && err.message ? err.message : '') + ' Попробуйте ещё раз.');
-      submitEl.disabled = false;
-      submitEl.textContent = 'Перейти к оплате';
-    }
-  });
 })();
 </script>
 </body>
